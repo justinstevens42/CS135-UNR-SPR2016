@@ -1,4 +1,4 @@
-/*  Name:  age.c
+/*  Name:  age_challenge1.c
 	Purpose:  Input two people's ages, and determines who is oldest
 	Author:  Justin Stevens  
 */
