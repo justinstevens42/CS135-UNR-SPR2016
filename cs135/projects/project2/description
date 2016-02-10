@@ -1,0 +1,11 @@
+Name:  Justin Stevens
+Files Included:  age.c, series.c, age_challenge1.c, series_challenge1.c
+
+For the age.c file, I used a structure in order to hold all of the information about both people (month of birth, date of birth, year of birth).  This was the most intuitive way to hold this data, especially if the problem had asked for more information or detail about the people (such as a name as well).  Beyond that, I declared a WhoIsOlder function which outputs a struct age determining which of the two people is older by comparing their date of birth, month of birth, and year of birth.  This was a fairly intuitive step as well, but I initially had it set so that if Person1.year>Person2.year, then Person1 was older, so had to go back and edit all of that. 
+
+For the age_challenge1.c challenge problem, I made a function ValidInput, which intializes a flag at 1, and if any of the input is invalid, then the flag is returned as 0.  The while loop returns while !flag is true, therefore, when it returns 0, it just keeps on running.  Making a flag in this manner is a practice I've done a lot in C++, so the only tricky part was figuring out to use a do while loop to make sure that the file ran at least once.  
+
+For the series.c problem, I used a while loop over a variable i, such that when i<=input, i^2 is added to the sum, and then added 2 to i to get all of the even integers.
+
+For the series_challenge1.c problem, the only problem I ran into was figuring out how to print things properly, since the first number should not have a plus sign before it.  To do this, I used a slightly different while loop, with iterating before i^2 is added to the sum, therefore, I had to change the condition to i<=input-2.
+
