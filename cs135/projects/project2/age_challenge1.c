@@ -80,11 +80,12 @@ int main(){
 	//This part was the trickiest, since in C, you can't compare structures for equality
 	//Therefore, I tested to see if their individual parts were equal
 	printf("\n");
-	if(WhoIsOlder(Person1,Person2).year==Person1.year && WhoIsOlder(Person1, Person2).month==Person1.month && WhoIsOlder(Person1,Person2).day==Person1.day){
+	struct ages Oldest=WhoIsOlder(Person1,Person2);
+	if(Oldest.year==Person1.year && Oldest.month==Person1.month && Oldest.day==Person1.day){
 		printf("Person 1 is the oldest. \n");
 	}
 	//This is the output of the Null structure declared above, with all parts 0  
-	else if(WhoIsOlder(Person1,Person2).year==0 && WhoIsOlder(Person1, Person2).month==0 && WhoIsOlder(Person1,Person2).day==0){
+	else if(Oldest.year==0 && Oldest.month==0 && Oldest.day==0){
 		printf("They are the same age. \n");
 	}
 	//If neither of the above conditions are satisfied, Person 2 is the oldest 
