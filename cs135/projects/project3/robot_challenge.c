@@ -1,4 +1,4 @@
-/*  Name:  robot.c
+/*  Name:  robot_challenge.c
 	Purpose:  Gives the user a list of options to control a simualted robot
 	Challenge:  Make it so that you can input a specific number of steps too
 	Author:  Justin Stevens */
@@ -65,11 +65,15 @@ int main(void){
 		scanf("%d", &cmd);
 		switch(cmd){
 			case 1:
-				Robot=Drive(Robot, dir, 1);
+				printf("Please enter the number of steps: ");
+				scanf("%d", &steps); //Number of steps user enters
+				Robot=Drive(Robot, dir, steps);
 				//Robot is changed to be the result of the Drive function, when moving a certain number of steps, steps, in a direction, dir
 				break;
 			case 2:
-				Robot=Drive(Robot, dir, -1);
+				printf("Please enter the number of steps: ");
+				scanf("%d", &steps);
+				Robot=Drive(Robot, dir, -steps);
 				//The reason we use negative steps is because the robot is moving backwards in this case
 				break;
 			case 3:
@@ -99,7 +103,7 @@ int main(void){
 				I couldn't figure out how to print out the value that the enumeration held, therefore, just assigned it to a string 
 				This is by far my least favorite part of the code and I'd be curious to learn an easier way to do this */  
 				switch(dir){
-					case 0: 
+					case 0:
 						direction="East";
 						break;
 					case 1:
