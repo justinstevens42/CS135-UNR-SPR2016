@@ -1,6 +1,11 @@
 #include <stdio.h>
 
 int main(){
-	int a=0x33;
-	printf("%d",a);
+	float quotient;
+	int dividend=13, divisor=3;
+
+	quotient=dividend/divisor;
+	printf("%f", quotient);
+	quotient=(float) dividend/divisor;
+	printf("%f", quotient);
 }
