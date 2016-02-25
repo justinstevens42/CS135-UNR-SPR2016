@@ -20,6 +20,7 @@ int main(){
 		var++;
 	
 	}
+	sentence[var]='\0';
 	printf("Capitalized sentence: ");
 	int letter=0;
 	while(sentence[letter]!='\0'){
