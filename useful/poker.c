@@ -147,10 +147,10 @@ int main(){
         while(ch!='n' && ch!='y'){
           ch=getchar();
         }
-        printf("\n");
         if(ch=='n'){
           break;
         }
+        printf("\n");
   }
 return 0;
 }
