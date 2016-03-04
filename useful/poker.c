@@ -6,57 +6,47 @@ Deals out a random poker hand, and then tells the user what hand they have.
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define true 1
-#define false 0
-#define hand_size 5
-typedef int bool;
+#include "poker.h"
 
-int main(){
-  //in_hand variableto avoid repeats
 
-  //ranks of the cards
+
+struct PokerHand MakeHand(struct PokerHand Player_Cards){
+  int i,j;
+  for (i=0; i<=12; i++){
+    for(j=0; j<=3; j++){
+      //iniitialize
+      Player_Cards.hand[i][j]=0;
+    }
+  }
   const char ranks[]={'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
   const char suits[]={'s', 'h', 'c', 'd'};
-
-  while(true){
-    bool in_hand[13][4]={false};
-    int poker_ranks[13]={0};
-    srand((unsigned) time(NULL));
-    int card_suit=0, card_rank=0, card_counter=0;
-    printf("Your hand: ");
-    //define a variable flush_suit to represent the suit of each card that is passed through
-    char flush_suit=0;
-    bool flush=true;
-    while(card_counter<hand_size){
-      //rank is random number from 1 to 13
-      card_rank=rand()%13;
-      //suit is random number from 1 to 4
-      card_suit=rand()%4;
-      if(in_hand[card_rank][card_suit]){
-        //if it's in the hand, then continue and disregard everything else
-        continue;
-      }
-      in_hand[card_rank][card_suit]=true;
-      //add the rank to the poker_ranks variable
-      poker_ranks[card_rank]+=1;
-      //print out the card
-      printf(" %c%c", ranks[card_rank], suits[card_suit]);
-      card_counter+=1;
-      if(card_counter==1){
-        //first time through so nothing to compare to;
-        flush_suit=suits[card_suit];
-        continue;
-      }
-      if(suits[card_suit]!=flush_suit){
-        //if the suit of the new card is not the suit of the previous card, then flush is false
-        flush=false;
-      }
-      flush_suit=suits[card_suit];
-
+  srand((unsigned) time(NULL));
+  int card_counter=0, card_rank, card_suit;
+  while(card_counter<hand_size){
+    //rank is random number from 1 to 13
+    card_rank=rand()%13;
+    //suit is random number from 1 to 4
+    card_suit=rand()%4;
+    if(Player_Cards.hand[card_rank][card_suit]){
+      //if it's in the hand, then continue and disregard everything else
+      continue;
     }
-    printf("\n");
-    int i; //variable used to go through the poker_ranks array
+    Player_Cards.hand[card_rank][card_suit]=true;
+    //add the rank to the poker_ranks variable
+    Player_Cards.poker_ranks[card_rank]+=1;
+    Player_Cards.poker_suits[card_suit]+=1;
+    printf(" %c%c", ranks[card_rank], suits[card_suit]);
+    card_counter+=1;
+  }
+  printf("\n");
+  return Player_Cards;
+}
+int main(){
+    struct PokerHand player1;
+    player1=MakeHand(player1);
+    /*
     char straight=0;
+    int i;
     for(i=0; i<=8; i++){
       if(poker_ranks[i]==1 && poker_ranks[i+1]==1 && poker_ranks[i+2]==1 && poker_ranks[i+3]==1 && poker_ranks[i+4]==1){
         straight=ranks[i+4];
@@ -152,5 +142,6 @@ int main(){
         }
         printf("\n");
   }
+  */
 return 0;
 }
