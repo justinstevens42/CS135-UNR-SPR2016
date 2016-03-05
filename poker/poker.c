@@ -8,16 +8,17 @@ Deals out a random poker hand, and then tells the user what hand they have.
 #include <time.h>
 #include "poker.h"
 
-
-
 struct PokerHand MakeHand(struct PokerHand Player_Cards){
   int i,j;
   for (i=0; i<=12; i++){
+    Player_Cards.poker_ranks[i]=0;
     for(j=0; j<=3; j++){
+      Player_Cards.poker_suits[j]=0;
       //iniitialize
       Player_Cards.hand[i][j]=0;
     }
   }
+
   const char ranks[]={'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
   const char suits[]={'s', 'h', 'c', 'd'};
   srand((unsigned) time(NULL));
@@ -35,113 +36,194 @@ struct PokerHand MakeHand(struct PokerHand Player_Cards){
     //add the rank to the poker_ranks variable
     Player_Cards.poker_ranks[card_rank]+=1;
     Player_Cards.poker_suits[card_suit]+=1;
-    printf(" %c%c", ranks[card_rank], suits[card_suit]);
+    printf("%c%c ", ranks[card_rank], suits[card_suit]);
     card_counter+=1;
   }
   printf("\n");
   return Player_Cards;
 }
-int main(){
-    struct PokerHand player1;
-    player1=MakeHand(player1);
-    /*
-    char straight=0;
-    int i;
-    for(i=0; i<=8; i++){
-      if(poker_ranks[i]==1 && poker_ranks[i+1]==1 && poker_ranks[i+2]==1 && poker_ranks[i+3]==1 && poker_ranks[i+4]==1){
-        straight=ranks[i+4];
-      }
-      else{
-        continue;
-      }
-    }
-    char high_card;
-    char quads=0, trips=0, pair=0, two_pair=0; //all initialized to the null character
 
-    for(i=0; i<13; i++){
-      //incrementing through all the ranks
-      switch(poker_ranks[i]){
-        case 4:
-          //if there are 4 of a kind, then we have quads
-          quads=ranks[i];
-          break;
-        case 3:
-          //if there are 3 of a kind, then we have trips
-          trips=ranks[i];
-          break;
-        case 2:
-          //if there is 2 of a kind, then we have a pair
-          if(pair){
-          //if we already have one pair, then we have two pair
-          two_pair=ranks[i];
-          }
-          else{
-            //otherwise, we just have one pair
-            pair=ranks[i];
-          }
-          break;
-        case 1:
-          //otherwise, it's just a high card
-          high_card=ranks[i];
-          break;
-        default:
-          break;
-        }
-      }
-      if(flush && straight){
-        //if this happens, you should probably buy a lottery ticket
-        printf("Straight flush %c high of %c\n", straight, flush);
-      }
-      if(quads){
-        printf("Quad %cs\n", quads);
-      }
-      else if(trips && pair){
-        printf("Full house %cs full of %cs\n", trips, pair);
-      }
-      else if(flush){
-        switch(flush_suit){
-          case 's':
-            printf("Flush: Spades\n");
-            break;
-          case 'h':
-            printf("Flush: Hearts\n");
-            break;
-          case 'd':
-            printf("Flush:  Diamonds\n");
-            break;
-          case 'c':
-            printf("Flush:  Clubs\n");
-            break;
-          default:
-            break;
-          }
-        }
-        else if(straight){
-          printf("%c high straight\n", straight);
-        }
-        else if(trips){
-          printf("Trip %cs\n", trips);
-        }
-        else if(two_pair){
-          printf("Two pair %cs and %cs\n", pair, two_pair);
-        }
-        else if(pair){
-          printf("Pair of %cs\n", pair);
+struct FinalHand BestFiveCards(struct PokerHand Player_Cards){
+  const char ranks[]={'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
+  const char suits[]={'s', 'h', 'c', 'd'};
+  struct FinalHand Final;
+  int i;
+  Final.best_hand=high_card;
+  for(i=0; i<13; i++){
+    //incrementing through all the ranks
+    switch(Player_Cards.poker_ranks[i]){
+      case 4:
+        //if there are 4 of a kind, then we have quads
+        Final.best_hand=quads;
+        Final.TypeOfHand[0]=ranks[i];
+        break;
+      case 3:
+        //if there are 3 of a kind, then we have trips
+        if(Final.best_hand==pair){
+          Final.best_hand=full_house;
+          Final.TypeOfHand[1]=Final.TypeOfHand[0];
+          Final.TypeOfHand[0]=ranks[i];
         }
         else{
-          printf("High card %c\n", high_card);
+        Final.best_hand=trips;
+        Final.TypeOfHand[0]=ranks[i];
         }
+        break;
+      case 2:
+        //if there is 2 of a kind, then we have a pair
+        if(Final.best_hand==trips){
+          Final.best_hand=full_house;
+          Final.TypeOfHand[1]=ranks[i];
+        }
+        if(Final.best_hand==pair){
+          Final.best_hand=two_pair;
+          Final.TypeOfHand[1]=ranks[i];
+        }
+        else{
+          Final.best_hand=pair;
+          Final.TypeOfHand[0]=ranks[i];
+        }
+        break;
+      case 1:
+        //otherwise, it's just a high card
+        if(Final.best_hand==high_card){
+          Final.best_hand=high_card;
+          Final.TypeOfHand[0]=ranks[i];
+        }
+        break;
+      default:
+        break;
+      }
+    }
 
-        char ch=0;
-        printf("Do you want another hand (y/n)?");
-        while(ch!='n' && ch!='y'){
-          ch=getchar();
+    if(Final.best_hand<flush){
+      for(i=0; i<=4; i++){
+        if(Player_Cards.poker_suits[i]==5){
+          Final.best_hand=flush;
+          Final.TypeOfHand[0]=suits[i];
         }
-        if(ch=='n'){
-          break;
+      }
+    }
+
+    if(Final.best_hand<=flush){
+      if(Player_Cards.poker_ranks[0]==1 && Player_Cards.poker_ranks[9]==1 && Player_Cards.poker_ranks[10]==1 && Player_Cards.poker_ranks[11]==1 && Player_Cards.poker_ranks[12]==1){
+        if(Final.best_hand==flush){
+          Final.best_hand=straight_flush;
+          Final.TypeOfHand[1]=ranks[3];
         }
-        printf("\n");
+        else{
+        Final.best_hand=straight;
+        Final.TypeOfHand[0]=ranks[3];
+        }
+      }
+      for(i=0; i<=8; i++){
+        //below line uses purely for testing purposes
+        //printf("%d %d %d %d %d\n", Player_Cards.poker_ranks[i], Player_Cards.poker_ranks[i+1], Player_Cards.poker_ranks[i+2], Player_Cards.poker_ranks[i+3], Player_Cards.poker_ranks[i+4]);
+        if(Player_Cards.poker_ranks[i]==1 && Player_Cards.poker_ranks[i+1]==1 && Player_Cards.poker_ranks[i+2]==1 && Player_Cards.poker_ranks[i+3]==1 && Player_Cards.poker_ranks[i+4]==1){
+          if(Final.best_hand==flush){
+            Final.best_hand=straight_flush;
+            Final.TypeOfHand[1]=ranks[i+4];
+          }
+          else{
+          Final.best_hand=straight;
+          Final.TypeOfHand[0]=ranks[i+4];
+          }
+        }
+        else{
+          continue;
+        }
+      }
+    }
+
+    return Final;
+}
+void PrintCards(struct FinalHand besthand){
+  if(besthand.best_hand==high_card){
+    printf("High Card %c", besthand.TypeOfHand[0]);
   }
-  */
+  else if(besthand.best_hand==pair){
+    printf("Pair of %cs", besthand.TypeOfHand[0]);
+  }
+  else if(besthand.best_hand==two_pair){
+    printf("Two Pair %c and %c", besthand.TypeOfHand[0], besthand.TypeOfHand[1]);
+  }
+  else if(besthand.best_hand==trips){
+    printf("Trip %cs", besthand.TypeOfHand[0]);
+  }
+  else if(besthand.best_hand==full_house){
+    printf("Full House %c full of %c", besthand.TypeOfHand[0], besthand.TypeOfHand[1]);
+  }
+  else if (besthand.best_hand==quads){
+    printf("Quad %cs", besthand.TypeOfHand[0]);
+  }
+  else if (besthand.best_hand==straight){
+    printf("Straight %c high", besthand.TypeOfHand[0]);
+  }
+  else if (besthand.best_hand==flush){
+    switch(besthand.TypeOfHand[0]){
+      case 's':
+        printf("Flush: Spades ");
+        break;
+      case 'h':
+        printf("Flush: Hearts");
+        break;
+      case 'd':
+        printf("Flush:  Diamonds");
+        break;
+      case 'c':
+        printf("Flush:  Clubs");
+        break;
+      default:
+        break;
+    }
+  }
+
+  else if (besthand.best_hand==straight_flush){
+    switch(besthand.TypeOfHand[0]){
+      case 's':
+        printf("Straight Flush: Spades, %c high ", besthand.TypeOfHand[1]);
+        break;
+      case 'h':
+        printf("Straight Flush:  Hearts, %c high ", besthand.TypeOfHand[1]);
+        break;
+      case 'd':
+        printf("Straight Flush:  Diamonds, %c high ", besthand.TypeOfHand[1]);
+        break;
+      case 'c':
+        printf("Straight Flush:  Clubs, %c high ", besthand.TypeOfHand[1]);
+        break;
+      default:
+        break;
+      }
+
+    }
+
+
+  printf("\n");
+}
+
+
+int main(){
+  struct PokerHand player1;
+  player1=MakeHand(player1);
+
+  struct PokerHand player2;
+  player2=MakeHand(player2);
+  /*
+  //Testing Purposes
+  int i;
+
+  player1.poker_suits[0]=5;
+  for(i=0; i<13; i++){
+    if(i==0 || i==9 || i==10 || i==11 || i==12){
+      player1.poker_ranks[i]=1;
+    }
+    else{
+      player1.poker_ranks[i]=0;
+    }
+  } */
+  struct FinalHand besthand1=BestFiveCards(player1);
+  PrintCards(besthand1);
+
 return 0;
 }
