@@ -22,6 +22,15 @@ int main(){
   //declare an array, X, which will hold all of the variables
   int X[user_input][user_input];
   int row, col;
+
+  for(row=0; row<user_input; row++){
+    for(col=0; col<user_input; col++){
+      X[row][col]=0;
+      printf("%d ", X[row][col]);
+    }
+    printf("\n");
+  }
+  printf("\n");
   for(row=0; row<user_input; row++){
     //iterate through the rows and columns
     for(col=0; col<user_input; col++){
