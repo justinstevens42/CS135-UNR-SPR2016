@@ -1,7 +1,7 @@
 /*
 Name:  toggle.c
 Purpose: Toggles lowercase to uppercase and vice versa
-Author:  Justin Stevens */
+Author:  Justin Stevens   */
 
 #include <stdio.h>
 

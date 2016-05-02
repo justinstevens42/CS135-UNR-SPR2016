@@ -1,7 +1,7 @@
 /*
 Name:  lab10.c
 Purpose:  Changes the bits in an input number.
-Author:  Justin Stevens */
+Author:  Justin Stevens   */
 
 #include <stdio.h>
 

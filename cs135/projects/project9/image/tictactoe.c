@@ -1,7 +1,7 @@
 /*
 Name:  tictactoe.c
 Purpose: Plays Tic Tac Toe for a 4x4 board
-Author:  Justin Stevens   */
+Author:  Justin Stevens */
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -18,8 +18,9 @@ void clear_table(char board[4][4]){
 }
 
 void display_table(char board[4][4]){
-  //print out the 4 by 4 board in a nice format
-  printf("\nColumn:1   2   3   4\n");
+  //print out the 4x4 board in a nice format
+  printf("\nThe current state of the game is:\n\n");
+  printf("Column:1   2   3   4\n");
   printf("Row:  ___ ___ ___ ___\n");
   printf("     |   |   |   |   |\n");
   printf("1    | %c | %c | %c | %c |\n", board[0][0], board[0][1], board[0][2], board[0][3]);
@@ -41,53 +42,42 @@ void display_table(char board[4][4]){
 
 }
 
-void display_image(char board[4][4]){
-  //we want each square to be 5x5, therefore, we make the board size equal to 23
+void display_image(FILE *fp, char board[4][4]){
+
   int board_size=23;
-  printf("P2\n");
-  //formatting stuff
-  printf("# image.pgm\n");
-  printf("%d %d\n", board_size, board_size);
-  printf("%d\n", 255);
-  //declare an array X which will hold all the numbers
+  fprintf(fp, "P2\n");
+  fprintf(fp, "# image.pgm\n");
+  fprintf(fp, "%d %d\n", board_size, board_size);
+  fprintf(fp, "%d\n", 255);
   int X[board_size][board_size];
   int row, col, board_row, board_col;
-  //quotient which is used to divide the board into 4 parts
+  //quotient which is used to divide the board into 3 parts
   int quotient=board_size/4;
-  //iterate over every row and every column
   for(row=0; row<board_size; row++){
     for(col=0; col<board_size; col++){
-      //we want a black line to make plus signs at all intersections when the board is divided into fourths
-      //this will happen when the row or column is equal to the quotient (which is board_size/4), 2*quotient+1, or 3*quotient+2
-      //the reason we use 2*quotient+1 and 3*quotient+2 is so that they are equidistant away
+      //the conditions where we have a 0 (which divide the board into threes) are when row or column is equal to quotient, or 2*quotient+1
+      //the reason that it is 2*quotient+1 is for this to be of equal distance away from the first value, since the row begins at 0
       if(row==quotient || row==2*quotient+1 || row==3*quotient+2 || col==quotient || col==2*quotient+1 || col==3*quotient+2){
         X[row][col]=0;
 
       }
       else{
-        //first row of the board
         if(0<=row && row<quotient){
-          //use this variable to hash into the board
           board_row=0;
         }
-        //second row of the board
         else if(quotient<row && row<2*quotient+1){
-          //use this variable to hash into the board
           board_row=1;
         }
-        //third row of the board
         else if(2*quotient+1<row && row<3*quotient+2){
           board_row=2;
         }
-        //fourth row of the board
         else if(3*quotient+2<row){
           board_row=3;
         }
-        //first column of the board
+
         if(0<=col && col<quotient){
           board_col=0;
         }
-        //second column of the board
         else if(quotient<col && col<2*quotient+1){
           board_col=1;
         }
@@ -97,28 +87,29 @@ void display_image(char board[4][4]){
         else if(3*quotient+2<col){
           board_col=3;
         }
-        //now that we can hash into the board, we do a switch statement
+
         switch(board[board_row][board_col]){
           case ' ':
-            X[row][col]=255; //if it is blank, make it white
+            X[row][col]=255;
             break;
           case 'X':
-            X[row][col]=128; //X's moves show up as a gray square
+            X[row][col]=128;
             break;
           case 'O':
-            X[row][col]=0; //O's moves show up as a black suqare
+            X[row][col]=0;
             break;
         }
 
       }
-      printf("%d ", X[row][col]);
+      fprintf(fp,"%d ", X[row][col]);
     }
-  printf("\n");
+  fprintf(fp,"\n");
   }
+  fclose(fp);
 }
 
 int check_four_in_a_row(char board[4][4]){
-  //this program checks whether or not there is a four in a row on the board, if there is it returns which player won
+  //this program checks whether or not there is a three in a row on the board
   int row,col;
   for(row=0; row<4; row++){
     //for each row, checks to see whether all elements of the row are the same
@@ -154,7 +145,6 @@ int check_four_in_a_row(char board[4][4]){
     }
     return 2;
   }
-  //if neither of them hae won
   return 0;
 }
 
@@ -183,7 +173,10 @@ void update_table(char board[4][4], char move, int row, int col){
 }
 
 int main(){
-  printf("This program plays the game of tic-tac-toe\n");
+
+  FILE *fp;
+  fp=fopen("image.pgm", "w+");
+  // printf("This program plays the game of tic-tac-toe\n");
   //initializes board
   char board[4][4];
   //clears the table so it's all empty
@@ -200,18 +193,12 @@ int main(){
     do{
 
       printf("\nEnter a command for Player %d ([row,col], c, s, p):", player);
-      //the user has several valid inputs they can choose from (such as entering two numbers, or a character), therefore I store this as a string
       gets(move);
-      //if the first number they entered was an integer
       if('0'<=move[0] && move[0]<='9'){
-        //make the row the integer value (using a nice ASCII method by subtracting the difference from '0')
         row=move[0]-'0';
-        //if the next number is a comma, then the third number is the column
         if(move[1]==','){
-          //use the same trick as above
           col=move[2]-'0';
         }
-        //weird case, included in case the user entered "12" thinking that meant row 1, col 2
         else if('0'<=move[1] && move[1]<='9'){
           col=move[1]-'0';
         }
@@ -225,16 +212,13 @@ int main(){
         }
       }
       else if(move[0]=='c'){
-        //clear the board
         clear_table(board);
       }
       else if(move[0]=='s'){
-        //display the board
         display_table(board);
       }
       else if(move[0]=='p'){
-        //display the board as an image file
-        display_image(board);
+        display_image(fp, board);
       }
       else{
         printf("Invalid selection");

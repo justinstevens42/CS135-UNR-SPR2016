@@ -1,7 +1,7 @@
 /*
 Name:  lab8.c
 Purpose:  Write a function that prints out the length of a string and the capitalized version of the string which is inputted by the user.
-Author:  Justin Stevens */
+Author:  Justin Stevens   */
 
 #include <stdio.h>
 

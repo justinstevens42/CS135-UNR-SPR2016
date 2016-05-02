@@ -1,7 +1,7 @@
 /*
 Name:  planets_sort.c
 Purpose: Sorts an array of planets
-Author:  Justin Stevens */
+Author:  Justin Stevens   */
 
 #include <stdio.h>
 #include <string.h>

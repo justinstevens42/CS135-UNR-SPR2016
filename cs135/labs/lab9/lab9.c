@@ -1,7 +1,7 @@
 /*
 Name:  lab9.c
 Purpose:  Remove the file name of a url so that it only prints the initial address
-Author:  Justin Stevens */
+Author:  Justin Stevens   */
 
 #include <stdio.h>
 

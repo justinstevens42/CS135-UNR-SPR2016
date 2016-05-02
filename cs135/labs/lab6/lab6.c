@@ -1,7 +1,7 @@
 /*
 Name:  lab6.c
 Purpose:  Write a program that asks the user to input two numbers, n and k, and outputs the kth digit of n
-Author:  Justin Stevens */
+Author:  Justin Stevens   */
 
 #include <stdio.h>
 

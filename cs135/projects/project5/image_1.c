@@ -1,7 +1,7 @@
 /*
 Name:  image_1.c
 Purpose: Print out an X in an array
-Author:  Justin Stevens */
+Author:  Justin Stevens  */
 
 #include <stdio.h>
 

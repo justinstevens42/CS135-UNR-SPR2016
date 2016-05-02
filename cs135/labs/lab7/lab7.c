@@ -1,7 +1,7 @@
 /*
 Name:  lab7.c
 Purpose:  Write a function swap that swaps two numbers using pointers.  Then, use this to switch the 0th and 7th element of an array, the 8th and 3rd, and finally the 14th and 0th, and print the resulting swapped array.
-Author:  Justin Stevens */
+Author:  Justin Stevens   */
 
 #include <stdio.h>
 

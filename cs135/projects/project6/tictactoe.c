@@ -1,7 +1,7 @@
 /*
 Name:  tictactoe.c
 Purpose: Plays Tic Tac Toe
-Author:  Justin Stevens */
+Author:  Justin Stevens   */
 
 #include <stdio.h>
 #include <stdbool.h>
