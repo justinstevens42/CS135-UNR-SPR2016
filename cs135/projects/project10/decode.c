@@ -7,6 +7,8 @@ Author:  Justin Stevens */
 #include <stdlib.h>
 
 int main(int argc, char *argv[]){
+  /*  Usage:  /decode img1_encoded.pgm img1_hidden.txt */
+  /*  Usage2:  /decode img2_encoded.pgm img2_hidden.txt */
   FILE *image, *hidden;
 
   char image_character;
@@ -63,7 +65,7 @@ int main(int argc, char *argv[]){
     cycle_8++;
     if(cycle_8==8){ //when we've gone through one complete cycle
       //these are the likely conditions for when we have an actual hidden character (and not garbage system memory)
-      if(32<=output_array[output_array_counter] && output_array[output_array_counter]<=200){
+      if(32<=output_array[output_array_counter] && output_array[output_array_counter]<=122){
         fprintf(hidden, "%c", output_array[output_array_counter]);
         output_array_counter++; //when we've completed one full cycle, increment the output_array_counter variable
         cycle_8=0; //reset the cycle

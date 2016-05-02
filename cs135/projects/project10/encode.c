@@ -9,6 +9,7 @@ Author:  Justin Stevens */
 
 
 int main(int argc, char *argv[]){
+  /*  Usage:  ./encode encode_image.pgm encode_message.txt encode_output.pgm */
   FILE *original, *hidden, *output;
   char image_character; //image_character to print out the header and iterate through the original image file
   char hidden_character; //hidden_character to iterate through the text file
@@ -69,12 +70,13 @@ int main(int argc, char *argv[]){
   while((hidden_character=fgetc(hidden))!=EOF){
     // printf("%c", hidden_character);
     // printf("%d", hidden_character); ->  debugging
-    for(hidden_counter=7; hidden_counter>=0; hidden_counter--){
-      if((hidden_character & 1<<hidden_counter) !=0){
-        image[image_row][image_col] |= (1<<0);
+    for(hidden_counter=0; hidden_counter<8; hidden_counter++){
+      //start with the least significant bit of hidden_character
+      if((hidden_character & 1<<hidden_counter) !=0){ //if hidden_character has a bit of 1 in that place
+        image[image_row][image_col] |= (1<<0); //make sure that the image's least significant bit is a 1
       }
       else{
-        image[image_row][image_col] &= ~(1<<0);
+        image[image_row][image_col] &= ~(1<<0); //otherwise, if the hidden_character has a bit of 0 in that place, make sure the image's least significant bit is also a 0
       }
       image_col++;
       if(image_col==col){
