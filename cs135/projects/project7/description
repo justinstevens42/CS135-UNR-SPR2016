@@ -1,0 +1,8 @@
+Name:  Justin Stevens
+Files included:  toggle.c, convert_time.c
+
+For the toggle.c program, the biggest issue I ran into was figuring out how to get the read_message function to give the right value for the length of the string.  Initially, I used the statement *len=0 and tried to increment it through *len++, however, this would print out the wrong value.  Eventually, after a lot of experimenting with different ways of doing this, I instead declared a value strlen in the read_message function, which incremented properly, and at the end had *len point to this value.  Additionally, I was getting weird output sometimes from the read_message function, therefore, I made the last value equal to the null character, therefore the puts function would ignore weird memory values.  I remembered how to do the toggle_case part from previous labs involving making a lower case value uppercase, however, the only difference was in the while loop over the string, we're using a character pointer rather than a character.  
+
+In the convert_time function, the biggest problem I had was figuring out the math for the print_time function.  Specifically, the minutes function was a little tricky to find, as you had to first divide it by 60, however, that included the values already included in the hours, therefore you had to take that value mod 60.  After figuring this out, I declared hours, minutes, and seconds in the main function, passed in their memory locations to the print_time function, and then printed out the new values accordingly.  
+
+I hope you enjoy this code!  

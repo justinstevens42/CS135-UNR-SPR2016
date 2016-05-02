@@ -1,0 +1,12 @@
+Name:  Justin Stevens
+Files included:  tictactoe.c
+
+For this project, I decided to use a board which was a character array, with the character 'X' being used for one player, 'O' being used for a second, and the space ' ' being used for the space on the board being empty.  This greatly simplified several functions, such as the display_table function, which just prints out the table through using the printf("%c") environment.  Writing this program was the most tricky part of the project for me, as it took a lot of trial and error to figure out how to print it correctly (I'm not good with ASCII art). 
+
+For the majority of the functions, I used a lot of for loops over the possible board conditions, and thinking of how to implement these for loops was fairly standard.  For instance, in the check_three_in_a_row function, I used a for loop over all the rows, to see if there were three elements in a row which were the same.  Similarly, I used a for loop over all the columns, to see if any of the columns were the same.  I also used this strategy for the check_table_full function, but used an early termination method, where if any parts of the array were spaces, then the program would return false immediately.  
+
+Another issue I had while working on this project was figuring out how to do the while loops in the main part of the program.  I eventually settled on using the while loop statement while(!(check_table_full(board) || check_three_in_a_row(board)), which repeatedly made the users input moves while the table was not full, and there was not a three in a row.  Figuring out how to implement this syntax was tricky and took a lot of trial and error with various if and and statements.  Finally, within this while loop, I had to implement another while loop to make sure that the user inputted a valid move, which I did through making a flag, legal_move and checking whether it was a legal option.
+
+The last part of the project which I had to figure out was getting it so that the user could input row 1, column 1, while the computer would read this into the [0][0] element of the array.  I left this for the end of the project, and eventually just updated the point row-1, col-1 in the array.
+
+I hope you enjoy this code!  

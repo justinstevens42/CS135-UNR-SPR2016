@@ -1,0 +1,12 @@
+Name:  Justin Stevens
+Files included:  planets_sort.c  
+
+I apologize for this being slightly late, I had submitted it earlier today at 11 AM, but realized after class started that I had misread something in the project description.  I fixed it in this version.  
+
+For the planets sort program, the main problem which I ran into was I didn't know how to swap two elements of an array.  I tried implementing various functions that would take as arguments two pointers in memory, and swap their values, but I ran into various errors such as the function was expecting arguments of type char * but had arguments of type char **, etc.  After this, I used a similar code that is used to copy the value of one character pointer into the other, which would print out weird things such as "Supiter" because it would just switch the J and the S in "Jupiter" and "Saturn".  Finally, however, I realized that I could use the built in function strcpy to significantly simplify my work.  
+
+The final part of solving this problem was then determining a way to switch the two character arrays.  I did this through a similar method that we used in our swap functions by declaring a temporary variable, and after switching planets[j] with planets[j-1], putting the temp variable into planets[j-1].
+
+While using the bubble sort like algorithm, I had initially used the line for(j=NUM_PLANETS-1; j>=i+1; j++), which resulted in tons of segfaults.  I spent a lot of time debugging that until I finally realized that I had to have j-- instead.    
+
+In the main function, one weird thing which I ran into was formatted printing.  After I checked to see if the third element of the array was "a" or "r", for the final element of the array, you have to print it seperately so that it's not followed by a comma, which made for some weird code.  
