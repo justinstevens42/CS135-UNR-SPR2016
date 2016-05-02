@@ -91,8 +91,11 @@ int main(int argc, char *argv[]){
   }
   fprintf(output, "\n");
 
-
-  // fwrite(image, sizeof(int), sizeof(image), output);
+  //first off, since we dynamically allocated this as a multidimensional array, for each row, we allocated enough space for col number of ints
+  for(i=0; i<row; i++){
+    free(image[i]); //therefore, we must free each row's memory first
+  }
+  free(image); //finally, in the image array, we allocated space for row image pointers (which were all arrays), which we now have to free
 
 
   fclose(original);
