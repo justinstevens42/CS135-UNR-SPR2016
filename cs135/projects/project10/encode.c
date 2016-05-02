@@ -13,7 +13,8 @@ int main(int argc, char *argv[]){
   char image_character; //image_character to print out the header and iterate through the original image file
   char hidden_character; //hidden_character to iterate through the text file
   int row, col, i, j; //the row and column size of the output PGM file
-  int is_there_bit; //I need to spice up my variable names occasionally
+  int image_pixels; //how many pizels are in the image (mainly a garbage variable)
+
 
   int image_row=0, image_col=0, hidden_counter;  //these three counters will be used for incrementing through the image and through the hidden character
 
@@ -52,6 +53,8 @@ int main(int argc, char *argv[]){
   fprintf(output, "\n");
   //get the row and column values to know how big to make the image file
   fscanf(original, "%d %d", &row, &col);
+  fscanf(original, "%d", &image_pixels);
+  fprintf(output, "%d %d\n%d\n", row, col, image_pixels);
 
   //start with a double pointer to image.  from here, we need to allocate space for each row to be an integer pointer (and we need "row" number of these)
   int **image=malloc(sizeof(int *)*row);
@@ -68,22 +71,26 @@ int main(int argc, char *argv[]){
     // printf("%d", hidden_character); ->  debugging
     for(hidden_counter=7; hidden_counter>=0; hidden_counter--){
       if((hidden_character & 1<<hidden_counter) !=0){
-        is_there_bit=1;
+        image[image_row][image_col] |= (1<<0);
       }
       else{
-        is_there_bit=0;
+        image[image_row][image_col] &= ~(1<<0);
       }
-
-      printf("%d", image[image_row][image_col]);
-      image[image_row][image_col] &= ~(1<<0);
-      image[image_row][image_col] |= is_there_bit;
       image_col++;
-      if(image_col=col){
+      if(image_col==col){
         image_row++;
-        image_row=0;
+        image_col=0;
       }
     }
   }
+  for(i=0; i<row; i++){
+    for(j=0; j<col; j++){
+      fprintf(output, "%d ", image[i][j]);
+    }
+    fprintf(output, "\n");
+  }
+  fprintf(output, "\n");
+
 
   // fwrite(image, sizeof(int), sizeof(image), output);
 
