@@ -1,7 +1,7 @@
 /*
 Name:  lab11.c
 Purpose:  Uses dynamic memory allocation to check an array of integers.  
-Author:  Justin Stevens */
+Author:  Justin Stevens   */
 
 #include <stdio.h>
 #include <stdlib.h>
