@@ -1,0 +1,41 @@
+Name:  Justin Stevens
+Files included:  encode.c, decode.c
+Other files:  img1_hidden.txt (hidden message in img1), img2_hidden.txt (hidden message in img2), encode_image.pgm (example encode picture I was using for testing), encode_message.txt (message I was encoding inside this image), and encode_output.pgm (the image with the hidden text included inside of it)
+
+This project by far took the longest out of any projects in this class so far, but when I finally found the hidden messages, it felt very accomplishing.  To begin with, I worked with the encode file.  I declared 3 file pointers, and used the usual warning method for if there are not 3 command line arguments (argc!=4) or if any of the file pointers are null to exit out of the program then.  After this, the header file of a PGM file has weird new lines at the beginning, therefore, I had to think of a way to get rid of these headers.  I scanned through the file using fgetc until this character was equal to a new line character, and stopped the while loop (all while printing this character to the output file, so that it has the same header!)  Initially, however, I was getting a segfault because I did not put quotation marks in the right place, which was very frustrating to debug. I did this twice for both of the first two header files, then scanned in the row and column size using fscanf.  Finally, the final line of the header was the pixels size, which I scanned into a variable in order to print it to the output file for formatting sake, and so that the next call of fscanf would start at the first integer.  
+
+Next, the big challenge was figuring out how to allocate enough space for a double pointer (as the project description said to allocate space for a multidimensional array).  In order to do this, first off, I had to allocate enough space for "row" number of int pointers, each of which would serve as an array.  In each of these rows, I had to allocate space for "col" number of integers, which would serve as the columns.  Then, I scanned in the appropriate values using fscanf.  Figuring out how to do this step took a lot of time, and consequently resulted in a lot of segfaults in the process.   
+
+Finally, I scanned over the hidden file pointer, which was put in "hidden".  The tricky part for this was determining how to update the corresponding bit.  In order to do this, I created a hidden_counter that would increment from 0 to 8 for each of the bits in the character "hidden_character".  Initially, I was trying to use a concise expression, however, I ultimately decided that this for loop strategy would be a lot better.  If the hidden_character had a 1 in the term 2^(hidden_counter), then the corresponding bit would be updated to be a 1; otherwise, the corresponding bit would be updated to be a 0.  It took a while to figure out how to come op with those expressions, as I initially declared a hidden bit "hidden_bit" that would have the value of 1 when there was a 1 in the 2^(hidden_counter) term, however, this would make each of the image places completely change, instead of changing their least significant number.  After writing to all of the spaces in the array, I simply had to print all of this to the output file, and then free space for the arrays (which had to first be done row by row, as each row contains a certain number of ints and then the whole image array).
+
+For the decode.c file, I used a very similar process in order to get all of the values in the image into the image_array array, however, this time, instead of making it multidimensional, I only made it one dimensional (thereby making it easier to work with).  Next, I made an output_array for all of the characters which we would find while looking at the image_array's bits, which was allocated to have enough spaces (counter number of chars).  Allocating the right space for both of these was tricky at first and resulted in segfaults, however, once I added the counter variable, this greatly helped.
+
+Finally, the next part of the program was the part that I was not proud of at all, however, it served the purpose it needed to.  For each character in the character array, I only wanted to update the value in cycles of 8, since 8 bits determine a character.  Therefore, I created an output_array counter which would *only* be incremented once every 8 times.  On the other hand, the image_array_counter gets incremented *every* time.  The output_array counter would get the value of the least significant bit in the image_array times a certain power of 2, determined by where in the cycle of 8 we are.  I figured out how to do this by thinking of how to get the bits "11000100" into a character, and noticed that I had to multiply the first bit "1" by 2^0 (because of the way that least significant bits worked for this decode function), the next bit "1" by 2^1, the third bit "0" by 2^2,... the sixth bit "1" by 2^5, and so forth.  Once I had this value in the array, the cycle should start fro the beginning, and print out the corresponding character. 
+
+This loop will continue until an EOF character is reached (which is put in the condition 0<=output_array[output_array_counter] && output_array[output_array_counter]<=255), at which point it sets the flag to 0, and exits out of the loop.  And voila, we get the two secret messages:
+
+----------------------
+
+Congrats, you've found the first hidden message!
+
+You should be proud... you might be able to get some sleep, now.
+
+Good luck with the rest,
+Dave
+
+------------------------
+
+You've decoded the second message! Nice work!
+
+... seriously, though, if you have not seen the Martian, you really should watch it. I'm not in the habit of reviewing movies, but it really is a great film.
+
+However, one thing that really bugs me about the movie is that they left in all the great botany, chemistry, and mechanical engineering scenes, and cut out almost all of the computer-based problems that were pretty realistic in the book.
+
+-Dave"
+
+--------------------------
+
+
+
+
+
