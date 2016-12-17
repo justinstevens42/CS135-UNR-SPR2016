@@ -18,4 +18,4 @@ Index of Projects
 
 **Project 9:**  Builds on Project 5 and Project 6 by making a 4x4 Tic Tac Toe game with images outputed in the form of PGM files.
 
-**Project 10 (Final):**  Uses bitwise operators and steganography to hide messages within images, and to decode messages from images. 
+**Project 10 (Final):**  Uses bitwise operators and steganography to hide messages within images, and to decode messages from images.  http://www.garykessler.net/library/steganography.html
